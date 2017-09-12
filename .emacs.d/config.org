@@ -421,3 +421,12 @@ tool to automatically update the environment of the current buffer
     :config
     (direnv-mode))
 #+END_SRC
+* Git
+- Let's use [[https://github.com/syohex/emacs-git-gutter][git-gutter]] to keep track of changes in our buffer
+  #+BEGIN_SRC emacs-lisp
+    (use-package git-gutter
+      :config
+      (custom-set-variables
+       '(git-gutter:update-interval 2)))
+    (global-git-gutter-mode t)
+  #+END_SRC

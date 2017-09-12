@@ -165,7 +165,6 @@ between windows)
       :config
       (progn
         (show-smartparens-global-mode t)))
-
     (add-hook 'prog-mode-hook 'turn-on-smartparens-strict-mode)
   #+END_SRC
 ** Prettier mode-line
@@ -288,7 +287,7 @@ We bind the following global keys:
   - =C-x b= :: helm-mini, allows switch buffer using helm powerful
                matching
   - =C-x C-f= :: helm-find-files, find-file but better ;-).
-  - =C-c h o=  :: helm-occur, allows quickly finding occurrences of
+  - =C-x C-o= :: helm-occur, allows quickly finding occurrences of
                   pattern in current buffer
 In helm mode, we define the following to bindings:
   - =<TAB>= :: helm-execute-persistent-action, will usually show the
@@ -301,11 +300,12 @@ affecting. We also set it to use the current frame instead of opening
 a whole window for itself.
 #+BEGIN_SRC emacs-lisp
   (use-package helm
+    :diminish helm-mode
     :bind (("M-x"         . helm-M-x)
            ("M-y"         . helm-show-kill-ring)
            ("C-x b"       . helm-mini)
            ("C-x C-f"     . helm-find-files)
-           ("C-c h o"     . helm-occur))
+           ("C-x C-o"     . helm-occur))
     :config
     (require 'helm-config)
     (global-unset-key (kbd "C-x c"))

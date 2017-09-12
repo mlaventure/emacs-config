@@ -1,0 +1,423 @@
+#+STARTUP: showall indent
+
+#+BEGIN_COMMENT
+You can make words *bold*, /italic/, _underlined_, =verbatim= and
+~code~, and, if you must, ‘+strike-through+’. Text in the code and
+verbatim string is not processed for Org mode specific syntax, it is
+exported verbatim.
+
+=C-c C-l= will set up/modify a link
+
+=C-c '= will open an emacs-lisp mode window to code and format what we
+need, the same combination will also close that window
+#+END_COMMENT
+
+* Packages
+This section has to be first, otherwise required packages won't be
+able to be installed and loaded
+
+- Who doesn't like a package manager? Noone, so always load it up.
+  #+BEGIN_SRC emacs-lisp
+    (require 'package)
+  #+END_SRC
+- Always load up MELPA
+  #+BEGIN_SRC emacs-lisp
+    (add-to-list 'package-archives
+                 '("melpa" . "http://melpa.milkbox.net/packages/") t)
+  #+END_SRC
+- We want to be able to setup those package early, so initialize them
+  all
+  #+BEGIN_SRC emacs-lisp
+  ;;  (package-initialize)
+  #+END_SRC
+- Refresh the package list content if if doesn't exist yet (so only
+  done the first time this configuration is loaded). We don't want to
+  do it at every start, it would slow us down too much
+  #+BEGIN_SRC emacs-lisp
+    (unless package-archive-contents
+      (package-refresh-contents))
+  #+END_SRC
+- Here we define a handy helper that will install a package if it's
+  not yet present then require it
+  #+BEGIN_SRC emacs-lisp
+    (defun activate-package (pkg)
+      "Install a package if it is not present then require it"
+      (unless (package-installed-p pkg)
+        (package-install pkg))
+      (require pkg))
+  #+END_SRC
+- Let's try and make use of [[https://github.com/jwiegley/use-package][use-package]]. And set it to always install
+  packages if they're not present.
+  #+BEGIN_SRC emacs-lisp
+    (activate-package 'use-package)
+    (setq use-package-always-ensure t)
+  #+END_SRC
+- Use auto-compile to always get up-to-date compiled packages
+  #+BEGIN_SRC emacs-lisp
+    (use-package auto-compile
+                 :init
+                 (setq load-prefer-newer t)
+                 :commands (auto-compile-on-load-mode)
+                 :config
+                 (setq auto-compile-display-buffer nil)
+                 (setq auto-compile-mode-line-counter t)
+                 (auto-compile-on-load-mode))
+                 
+  #+END_SRC
+* UI
+This is setting up the UI as a like it, simple and clean. I also put
+some tweak affecting navigation in this section (e.g. switching
+between windows)
+** Apparence
+- We wanna hide most of the UI elements
+  - menu bar
+  - tool bar
+  - scroll bar
+  #+BEGIN_SRC emacs-lisp
+    (menu-bar-mode -1)
+    (tool-bar-mode -1)
+    (scroll-bar-mode -1)
+  #+END_SRC
+- Highlight matching parenthesis and current line. For parenthesis we
+  activate [[https://github.com/Fanael/rainbow-delimiters][raimbow-delimiters]], it gives us different colors per depth
+  #+BEGIN_SRC emacs-lisp
+    (show-paren-mode t)
+    (use-package rainbow-delimiters)
+    (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
+
+    (global-hl-line-mode t)
+  #+END_SRC
+- Show current column number
+  #+BEGIN_SRC emacs-lisp
+    (column-number-mode t)
+  #+END_SRC
+- Use icons from [[https://github.com/domtronn/all-the-icons.el][all-the-icons]], who doesn't like icons?
+  TODO: need to figure out how to automatically install the icons via
+  ~all-the-icons-install-fonts~ on first start
+  #+BEGIN_SRC emacs-lisp
+    (use-package all-the-icons
+      :config
+      (setq neo-theme (if (display-graphic-p) 'icons 'arrow)))
+  #+END_SRC
+** Navigation
+- Activate Camel Case navigation
+  #+BEGIN_SRC emacs-lisp
+    (global-subword-mode t)
+  #+END_SRC
+- Move from window to window with Shift key
+  #+BEGIN_SRC emacs-lisp
+    (windmove-default-keybindings)
+    (setq windmove-wrap-around t)
+    ;; Make windmove work in org-mode:
+    (add-hook 'org-shiftup-final-hook 'windmove-up)
+    (add-hook 'org-shiftleft-final-hook 'windmove-left)
+    (add-hook 'org-shiftdown-final-hook 'windmove-down)
+    (add-hook 'org-shiftright-final-hook 'windmove-right)
+  #+END_SRC
+- Swap buffer around with C-Shift-<key>
+  #+BEGIN_SRC emacs-lisp
+    (use-package buffer-move
+      :bind (("C-S-<up>" . buf-move-up)
+             ("C-S-<down>" . buf-move-down)
+             ("C-S-<left>" . buf-move-left)
+             ("C-S-<right>" . buf-move-right)))
+  #+END_SRC
+- [[https://www.emacswiki.org/emacs/WinnerMode][Winner mode]] allow us to jump between window configuration using =C-c
+  <left>= and =C-c <right>=. Very useful when wanting to see one
+  buffer with more space then be back to comparison for instance
+    #+BEGIN_SRC emacs-lisp
+      (when (fboundp 'winner-mode)
+        (winner-mode 1))
+    #+END_SRC
+- Teach emacs to accept =y= and =n= for =yes= and =no=.
+  #+BEGIN_SRC emacs-lisp
+    (fset 'yes-or-no-p 'y-or-n-p)
+  #+END_SRC
+- Set =F8= as a toggle for neotree to have a nice file explorer in
+  buffer.
+  #+BEGIN_SRC emacs-lisp
+    (use-package neotree
+      :after all-the-icons
+      :commands (neotree-toggle)
+      :bind ("<f8>" . neotree-toggle))
+  #+END_SRC
+- Use [[https://github.com/justbur/emacs-which-key][which-key]] to help us figure out what we can do next
+#+BEGIN_SRC emacs-lisp
+  (use-package which-key
+    :defer 5
+    :diminish which-key-mode
+    :init
+    (setq which-key-sort-order 'which-key-key-order-alpha)
+    :bind* (("M-m ?" . which-key-show-top-level))
+    :config
+    (which-key-mode)
+    (which-key-add-key-based-replacements
+      "M-m ?" "top level bindings"))
+#+END_SRC
+- Unbind =C-z=, I don't want my GUI emacs to disappear on me
+  #+BEGIN_SRC emacs-lisp
+    (global-unset-key (kbd "C-z"))
+  #+END_SRC
+- Enable [[https://github.com/Fuco1/smartparens][smartparens]] to automatically have our pairs matched for us
+  #+BEGIN_SRC emacs-lisp
+    (use-package smartparens-config
+      :ensure smartparens
+      :config
+      (progn
+        (show-smartparens-global-mode t)))
+
+    (add-hook 'prog-mode-hook 'turn-on-smartparens-strict-mode)
+  #+END_SRC
+** Prettier mode-line
+We use the cyan [[https://github.com/kuanyui/moe-theme.el][moe-theme]] for our powerline.
+#+BEGIN_SRC emacs-lisp
+  (use-package powerline
+    :config
+    (use-package moe-theme
+      :commands (powerline-moe-theme moe-theme-set-color))
+    (powerline-moe-theme)
+    (moe-theme-set-color 'cyan))
+#+END_SRC
+*** TODO We wanna switch to the more powerful [[https://github.com/TheBB/spaceline][spaceline]] eventually and [[https://github.com/domtronn/spaceline-all-the-icons.el][spaceline-all-the-icons]]
+** Mode-line customization
+- Better unique filename. We want to see =file|file= and =file|titi=
+  when opening =/toto/file= and =/titi/file= instead of =file<x>=.
+  #+BEGIN_SRC emacs-lisp
+    (use-package uniquify
+      :ensure nil ;; this is a builtin package
+      :config
+      (setq uniquify-buffer-name-style 'post-forward))
+  #+END_SRC
+** Highlight or Fix some common mistakes
+- Trailing whitespaces
+  #+BEGIN_SRC emacs-lisp
+    (add-hook 'prog-mode-hook (lambda () (interactive) (setq show-trailing-whitespace 1)))
+  #+END_SRC
+- 80 columns rule using [[https://www.emacswiki.org/emacs/FillColumnIndicator][fill-column-indicator]]
+  #+BEGIN_SRC emacs-lisp
+    (use-package fill-column-indicator
+      :commands (fci-mode)
+      :init
+      (setq fci-rule-width          3
+            fci-rule-column         79
+            fci-rule-use-dashes     t
+            fci-rule-color          "plum")
+      (define-globalized-minor-mode global-fci-mode fci-mode (lambda ()
+                                                               (if buffer-file-name (fci-mode 1)
+                                                                 (fci-mode 0))))
+      (global-fci-mode 1))
+  #+END_SRC
+- At 100 columns, use [[https://github.com/jordonbiondo/column-enforce-mode][column-enforce-mode]] instead. We set the color of
+  faulty characters to "violet red"
+  #+BEGIN_SRC emacs-lisp
+    (use-package column-enforce-mode
+      :commands (column-enforce-mode)
+      :config
+      (setq column-enforce-column 100)
+      (custom-set-faces
+            `(column-enforce-face ((t (:inherit font-lock-warning-face :underline t :foreground "violet red"))))))
+  #+END_SRC
+- Always add a newline at end of files, and default tab to 4 spaces
+  #+BEGIN_SRC emacs-lisp
+    (setq mode-require-final-newline t
+          tab-width 4)
+  #+END_SRC
+** I like my theme dark
+#+BEGIN_SRC emacs-lisp
+  (custom-set-faces
+   '(default ((t (:inherit nil
+                           :stipple nil
+                           :background "#2e3436"
+                           :foreground "#eeeeec"
+                           :inverse-video nil
+                           :box nil
+                           :strike-through nil
+                           :overline nil
+                           :underline nil
+                           :slant normal
+                           :weight normal
+                           :height 70
+                           :width normal
+                           :foundry "unknown"
+                           :family "DejaVu Sans Mono"))))
+   '(hl-line ((t (:background "steel blue"))))
+   '(idle-highlight ((t (:inherit region :background "tomato")))))
+#+END_SRC
+* Encoding System
+UTF-8 for all the things!
+#+BEGIN_SRC emacs-lisp
+  (set-terminal-coding-system 'utf-8)
+  (set-keyboard-coding-system 'utf-8)
+  (set-language-environment "UTF-8")
+  (prefer-coding-system 'utf-8)
+  (setq-default buffer-file-coding-system 'utf-8-auto-unix)
+#+END_SRC
+* Backup
+By default emacs backups edited buffer in their current
+directory. Having a bunch of =~= files everywhere in my filesystem is
+highly annoying, so let's put them somewhere else.
+#+BEGIN_SRC emacs-lisp
+  (let ((backups-dir (expand-file-name "backups" user-emacs-directory)))
+    (setq backup-by-copying t                             ;; Copy the file, don't rename it
+          backup-directory-alist `((".*" . ,backups-dir)) ;; Put them in ~/.emacs.backups
+          delete-old-versions t                           ;; Delete old version
+          kept-old-versions 3                             ;; Keep the 3 oldest version
+          kept-new-versions 3                             ;; and the 3 newest one (including the one being made)
+          version-control t))                             ;; Use numbered file name
+#+END_SRC
+* Undo Tree
+[[https://www.emacswiki.org/emacs/UndoTree][undo-tree]] provide a visual tree of the undo that we have made.
+#+BEGIN_SRC emacs-lisp
+  (use-package undo-tree
+    :bind (("<f7>" . undo-tree-visualize))
+    :config
+    (setq undo-tree-auto-save-history t)
+    (let ((undo-dir (expand-file-name "undo" user-emacs-directory)))
+      (setq undo-tree-history-directory-alist `((".*" . ,undo-dir))))
+    (global-undo-tree-mode))
+#+END_SRC
+* Helm
+Helm make it easy to filter stuff :). I used [[http://tuhdo.github.io/helm-intro.html][this tutorial]] as an
+inspiration for most of the following configuration.
+We bind the following global keys:
+  - =C-c h= :: is made the helm prefix, which-key will show possible
+               match if we ever forget what to do next
+  - =M-x= :: helm-M-x, same but better
+  - =M-y= :: helm-show-kill-ring, allows to have a visual view of the
+             kill ring
+  - =C-x b= :: helm-mini, allows switch buffer using helm powerful
+               matching
+  - =C-x C-f= :: helm-find-files, find-file but better ;-).
+  - =C-c h o=  :: helm-occur, allows quickly finding occurrences of
+                  pattern in current buffer
+In helm mode, we define the following to bindings:
+  - =<TAB>= :: helm-execute-persistent-action, will usually show the
+               current match content or if in something like =M-x= the
+               associated help
+  - =C-z= :: helm-select-action, will show available action from the
+             current helm status
+We let helm auto-resize from =30%= to =70%= of the frame is
+affecting. We also set it to use the current frame instead of opening
+a whole window for itself.
+#+BEGIN_SRC emacs-lisp
+  (use-package helm
+    :bind (("M-x"         . helm-M-x)
+           ("M-y"         . helm-show-kill-ring)
+           ("C-x b"       . helm-mini)
+           ("C-x C-f"     . helm-find-files)
+           ("C-c h o"     . helm-occur))
+    :config
+    (require 'helm-config)
+    (global-unset-key (kbd "C-x c"))
+    (global-set-key (kbd "C-c h")         'helm-command-prefix)
+    (define-key helm-map (kbd "<tab>")    'helm-execute-persistent-action)
+    (define-key helm-map (kbd "C-z")      'helm-select-action)
+    (helm-mode t)
+    (setq helm-autoresize-max-height 70
+          helm-autoresize-min-height 30
+          helm-split-window-in-side-p t)
+    (helm-autoresize-mode t))
+#+END_SRC
+* Flyspell
+Let's have some warning when we type things wrong ate
+#+BEGIN_SRC emacs-lisp
+  (use-package flyspell-mode
+    :ensure nil
+    :config
+    (add-hook 'flyspell-mode-hook 'flyspell-buffer)
+    (setq flyspell-issue-message-flag nil)
+    (dolist (hook '(text-mode-hook org-mode-hook))
+      (add-hook hook (lambda () (flyspell-mode 1))))
+    (dolist (hook '(change-log-mode-hook log-edit-mode-hook))
+      (add-hook hook (lambda () (flyspell-mode -1)))))
+#+END_SRC
+* Flycheck
+We want to check for linter errors as we go (see [[https://github.com/flycheck/flycheck][here]] for
+documentation)
+#+BEGIN_SRC emacs-lisp
+  (use-package flycheck
+    :ensure t
+    :init (global-flycheck-mode))
+#+END_SRC
+* Company
+We use the [[http://company-mode.github.io/][company-mode]] completion framework
+#+BEGIN_SRC emacs-lisp
+  (use-package company)
+#+END_SRC
+* Golang
+  - Install go-mode and set it up to use =goimports= to format our
+    files. go-mode depends on the following tools:
+    - [[github.com/rogpeppe/godef][godef]]
+    - [[golang.org/x/tools/cmd/goimports][goimports]]
+    - [[golang.org/x/tools/cmd/godoc][godoc]]
+    #+BEGIN_SRC emacs-lisp
+      (use-package go-mode
+        :commands (gofmt-before-save)
+        :config
+        (setq gofmt-command "goimports")
+        (add-hook 'before-save-hook   'gofmt-before-save)
+        (add-hook 'go-mode-hook       'column-enforce-mode)
+        (add-hook 'go-mode-hook       (lambda () (flyspell-prog-mode)))
+        (add-hook 'go-mode-hook       (lambda ()
+                                        (local-set-key (kbd "C-c C-r") 'go-remove-unused-imports)))
+        (add-hook 'go-mode-hook       (lambda ()
+                                        (local-set-key (kbd "M-.") 'godef-jump)))
+        (define-key go-mode-map (kbd "C-c C-c")       'comment-region)
+        (define-key go-mode-map (kbd "C-u C-c C-c")   'uncomment-region))
+    #+END_SRC
+  - Install [[https://github.com/syohex/emacs-go-eldoc][go-eldoc]] to see variable, return value and function
+    argument in the echo area. It depends on [[github.com/nsf/gocode][gocode]].
+    #+BEGIN_SRC emacs-lisp
+      (use-package go-eldoc
+        :after go-mode
+        :config
+        (add-hook 'go-mode-hook 'go-eldoc-setup))
+    #+END_SRC
+  - Activate completion with [[https://github.com/nsf/gocode/tree/master/emacs-company][company-go]]
+    #+BEGIN_SRC emacs-lisp
+      (use-package company-go
+        :after company
+        :config
+        (setq company-idle-delay .1
+              company-echo-delay 0)
+        (add-hook 'go-mode-hook (lambda ()
+                                  (set (make-local-variable 'company-backends) '(company-go))
+                                  (company-mode)))
+        (custom-set-faces
+         `(company-scrollbar-bg       ((t (:background "lightgray"))))
+         `(company-scrollbar-fg       ((t (:background "darkgrey"))))
+         '(company-preview            ((t (:foreground "darkgray" :underline t))))
+         '(company-preview-common     ((t (:inherit company-preview))))
+         '(company-tooltip            ((t (:background "lightgray" :foreground "black"))))
+         '(company-tooltip-selection  ((t (:background "steelblue" :foreground "white"))))
+         '(company-tooltip-common     ((((type x)) (:inherit company-tooltip :weight bold))
+                                       (t (:inherit company-tooltip))))
+         '(company-tooltip-common-selection
+           ((((type x)) (:inherit company-tooltip-selection :weight bold))
+            (t (:inherit company-tooltip-selection))))))
+    #+END_SRC
+  - Use go-guru, it depends on the [[https://godoc.org/golang.org/x/tools/cmd/guru][guru]] tool.
+    #+BEGIN_SRC emacs-lisp
+      (use-package go-guru
+        :after go-mode
+        :commands (go-guru-hl-identifier-mode)
+        :config
+        (define-key go-mode-map (kbd "C-c g") 'go-guru-map)
+        (add-hook 'go-mode-hook 'go-guru-hl-identifier-mode))
+    #+END_SRC
+  - Make use of [[https://github.com/emacsmirror/godoctor][godoctor.el]], it depends on the [[http://gorefactor.org/][godocotor]] utility
+    #+BEGIN_SRC emacs-lisp
+      (use-package godoctor
+        :bind (("C-c d r" . godoctor-rename)
+               ("C-c d e" . godoctor-extract)
+               ("C-c d t" . godoctor-toggle)
+               ("C-c d g" . godoctor-godoc)))
+    #+END_SRC
+* Direnv
+I make use of several different gopath, this makes use of the [[https://direnv.net/][direnv]]
+tool to automatically update the environment of the current buffer
+#+BEGIN_SRC emacs-lisp
+  (use-package direnv
+    :config
+    (direnv-mode))
+#+END_SRC

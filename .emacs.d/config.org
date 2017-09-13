@@ -421,14 +421,16 @@ We use the [[http://company-mode.github.io/][company-mode]] completion framework
       (use-package go-guru
         :after go-mode
         :commands (go-guru-hl-identifier-mode)
+        :bind (:map go-mode-map
+                    ("C-c g" . go-guru-map))
         :config
-        (define-key go-mode-map (kbd "C-c g") 'go-guru-map)
         (add-hook 'go-mode-hook 'go-guru-hl-identifier-mode))
     #+END_SRC
   - Make use of [[https://github.com/emacsmirror/godoctor][godoctor.el]], it depends on the [[http://gorefactor.org/][godocotor]] utility
     #+BEGIN_SRC emacs-lisp
       (use-package godoctor
-        :bind (("C-c d r" . godoctor-rename)
+        :bind (:map go-mode-map
+               ("C-c d r" . godoctor-rename)
                ("C-c d e" . godoctor-extract)
                ("C-c d t" . godoctor-toggle)
                ("C-c d g" . godoctor-godoc)))

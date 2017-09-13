@@ -157,7 +157,7 @@ clutter my modeline with them. [[https://github.com/myrjola/diminish.el][Diminis
 - Use [[https://github.com/justbur/emacs-which-key][which-key]] to help us figure out what we can do next
 #+BEGIN_SRC emacs-lisp
   (use-package which-key
-    :defer 5
+    :demand t
     :diminish which-key-mode
     :init
     (setq which-key-sort-order 'which-key-key-order-alpha)

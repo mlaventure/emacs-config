@@ -28,23 +28,17 @@ able to be installed and loaded
 - We want to be able to setup those package early, so initialize them
   all
   #+BEGIN_SRC emacs-lisp
-  ;;  (package-initialize)
-  #+END_SRC
-- Refresh the package list content if if doesn't exist yet (so only
-  done the first time this configuration is loaded). We don't want to
-  do it at every start, it would slow us down too much
-  #+BEGIN_SRC emacs-lisp
-    (unless package-archive-contents
-      (package-refresh-contents))
+    (package-initialize)
   #+END_SRC
 - Here we define a handy helper that will install a package if it's
   not yet present then require it
   #+BEGIN_SRC emacs-lisp
-    (defun activate-package (pkg)
-      "Install a package if it is not present then require it"
-      (unless (package-installed-p pkg)
-        (package-install pkg))
-      (require pkg))
+        (defun activate-package (pkg)
+          "Install a package if it is not present then require it"
+          (unless (package-installed-p pkg)
+            (package-refresh-contents)
+            (package-install pkg))
+          (require pkg))
   #+END_SRC
 - Let's try and make use of [[https://github.com/jwiegley/use-package][use-package]]. And set it to always install
   packages if they're not present.
@@ -217,9 +211,9 @@ We use spaceline with the cyan [[https://github.com/kuanyui/moe-theme.el][moe-th
             fci-rule-column         79
             fci-rule-use-dashes     t
             fci-rule-color          "plum")
-      (define-globalized-minor-mode global-fci-mode fci-mode (lambda ()
-                                                               (if buffer-file-name (fci-mode 1)
-                                                                 (fci-mode 0))))
+      (define-globalized-minor-mode global-fci-mode
+        fci-mode (lambda ()
+                   (if buffer-file-name (fci-mode 1) (fci-mode 0))))
       (global-fci-mode 1))
   #+END_SRC
 - At 100 columns, use [[https://github.com/jordonbiondo/column-enforce-mode][column-enforce-mode]] instead. We set the color of

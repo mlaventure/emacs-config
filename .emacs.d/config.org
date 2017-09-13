@@ -68,6 +68,18 @@ able to be installed and loaded
 This is setting up the UI as a like it, simple and clean. I also put
 some tweak affecting navigation in this section (e.g. switching
 between windows)
+** Hide the minor modes
+Since I know exactly what minor modes I have enabled, no need to
+clutter my modeline with them. [[https://github.com/myrjola/diminish.el][Diminish]] is a mode that does just that.
+#+BEGIN_SRC emacs-lisp
+  (use-package diminish
+    :ensure t
+    :demand t
+    :diminish visual-line-mode
+    :diminish hs-minor-mode
+    :diminish abbrev-mode
+    :diminish auto-fill-function)
+#+END_SRC
 ** Apparence
 - We wanna hide most of the UI elements
   - menu bar
@@ -103,6 +115,7 @@ between windows)
 - Activate Camel Case navigation
   #+BEGIN_SRC emacs-lisp
     (global-subword-mode t)
+    (diminish 'subword-mode)
   #+END_SRC
 - Move from window to window with Shift key
   #+BEGIN_SRC emacs-lisp
@@ -211,6 +224,7 @@ We use the cyan [[https://github.com/kuanyui/moe-theme.el][moe-theme]] for our p
   #+BEGIN_SRC emacs-lisp
     (use-package column-enforce-mode
       :commands (column-enforce-mode)
+      :diminish column-enforce-mode
       :config
       (setq column-enforce-column 100)
       (custom-set-faces
@@ -322,6 +336,7 @@ a whole window for itself.
 Let's have some warning when we type things wrong ate
 #+BEGIN_SRC emacs-lisp
   (use-package flyspell-mode
+    :diminish flyspell-mode
     :ensure nil
     :config
     (add-hook 'flyspell-mode-hook 'flyspell-buffer)
@@ -337,12 +352,14 @@ documentation)
 #+BEGIN_SRC emacs-lisp
   (use-package flycheck
     :ensure t
+    :diminish flycheck-mode
     :init (global-flycheck-mode))
 #+END_SRC
 * Company
 We use the [[http://company-mode.github.io/][company-mode]] completion framework
 #+BEGIN_SRC emacs-lisp
-  (use-package company)
+  (use-package company
+    :diminish company-mode)
 #+END_SRC
 * Golang
   - Install go-mode and set it up to use =goimports= to format our
@@ -370,6 +387,7 @@ We use the [[http://company-mode.github.io/][company-mode]] completion framework
     #+BEGIN_SRC emacs-lisp
       (use-package go-eldoc
         :after go-mode
+        :diminish eldoc-mode
         :config
         (add-hook 'go-mode-hook 'go-eldoc-setup))
     #+END_SRC
@@ -425,6 +443,7 @@ tool to automatically update the environment of the current buffer
 - Let's use [[https://github.com/syohex/emacs-git-gutter][git-gutter]] to keep track of changes in our buffer
   #+BEGIN_SRC emacs-lisp
     (use-package git-gutter
+      :diminish git-gutter-mode
       :config
       (custom-set-variables
        '(git-gutter:update-interval 2)))

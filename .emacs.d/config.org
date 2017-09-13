@@ -175,22 +175,24 @@ clutter my modeline with them. [[https://github.com/myrjola/diminish.el][Diminis
   #+BEGIN_SRC emacs-lisp
     (use-package smartparens-config
       :ensure smartparens
+      :diminish smartparens-mode
       :config
       (progn
         (show-smartparens-global-mode t)))
-    (add-hook 'prog-mode-hook 'turn-on-smartparens-strict-mode)
+    (add-hook 'prog-mode-hook 'turn-on-smartparens-mode)
   #+END_SRC
 ** Prettier mode-line
-We use the cyan [[https://github.com/kuanyui/moe-theme.el][moe-theme]] for our powerline.
+We use spaceline with the cyan [[https://github.com/kuanyui/moe-theme.el][moe-theme]] for our mode-line.
 #+BEGIN_SRC emacs-lisp
-  (use-package powerline
+  (use-package spaceline-config
+    :ensure spaceline
     :config
     (use-package moe-theme
       :commands (powerline-moe-theme moe-theme-set-color))
     (powerline-moe-theme)
-    (moe-theme-set-color 'cyan))
+    (moe-theme-set-color 'cyan)
+    (spaceline-emacs-theme))
 #+END_SRC
-*** TODO We wanna switch to the more powerful [[https://github.com/TheBB/spaceline][spaceline]] eventually and [[https://github.com/domtronn/spaceline-all-the-icons.el][spaceline-all-the-icons]]
 ** Mode-line customization
 - Better unique filename. We want to see =file|file= and =file|titi=
   when opening =/toto/file= and =/titi/file= instead of =file<x>=.

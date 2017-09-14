@@ -175,6 +175,14 @@ clutter my modeline with them. [[https://github.com/myrjola/diminish.el][Diminis
         (show-smartparens-global-mode t)))
     (add-hook 'prog-mode-hook 'turn-on-smartparens-mode)
   #+END_SRC
+- Highlight current word with [[https://github.com/fgeller/highlight-thing.el][highlight-thing]]
+  #+BEGIN_SRC emacs-lisp
+    (use-package highlight-thing
+      :demand t
+      :config
+      (setq highlight-thing-exclude-thing-under-point t)
+      (global-highlight-thing-mode))
+  #+END_SRC
 ** Prettier mode-line
 We use spaceline with the cyan [[https://github.com/kuanyui/moe-theme.el][moe-theme]] for our mode-line.
 #+BEGIN_SRC emacs-lisp
@@ -377,7 +385,8 @@ We use the [[http://company-mode.github.io/][company-mode]] completion framework
         (setq gofmt-command "goimports")
         (add-hook 'before-save-hook   'gofmt-before-save)
         (add-hook 'go-mode-hook       'column-enforce-mode)
-        (add-hook 'go-mode-hook       'flyspell-prog-mode))
+        (add-hook 'go-mode-hook       'flyspell-prog-mode)
+        (add-hook 'go-mode-hook       (lambda () (highlight-thing-mode 0))))
     #+END_SRC
   - Install [[https://github.com/syohex/emacs-go-eldoc][go-eldoc]] to see variable, return value and function
     argument in the echo area. It depends on [[github.com/nsf/gocode][gocode]].

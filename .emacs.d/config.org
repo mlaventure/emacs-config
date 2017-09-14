@@ -462,3 +462,9 @@ It always go back to C eventually ;-)
                              (semantic-idle-scheduler-mode 1)
                              (semantic-stickyfunc-mode 1))))
 #+END_SRC
+* DockerFile
+Just want them to be colorized, [[https://github.com/spotify/dockerfile-mode/blob/master/dockerfile-mode.el][dockerfile-mode]] also allows to build
+directly from emacs though.
+#+BEGIN_SRC emacs-lisp
+  (use-package dockerfile-mode)
+#+END_SRC

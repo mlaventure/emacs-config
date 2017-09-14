@@ -448,3 +448,17 @@ tool to automatically update the environment of the current buffer
        '(git-gutter:update-interval 2)))
     (global-git-gutter-mode t)
   #+END_SRC
+* C
+It always go back to C eventually ;-)
+#+BEGIN_SRC emacs-lisp
+  (use-package cc-mode
+    :ensure nil
+    :config
+    (semantic-mode 1)
+    (use-package ede
+      :commands global-ede-mode)
+    (add-hook 'c-mode-hook (lambda ()
+                             (global-ede-mode)
+                             (semantic-idle-scheduler-mode 1)
+                             (semantic-stickyfunc-mode 1))))
+#+END_SRC

@@ -306,8 +306,8 @@ We bind the following global keys:
   - =C-x b= :: helm-mini, allows switch buffer using helm powerful
                matching
   - =C-x C-f= :: helm-find-files, find-file but better ;-).
-  - =C-x C-o= :: helm-occur, allows quickly finding occurrences of
-                  pattern in current buffer
+  - =C-s= :: helm-occur, allows quickly finding occurrences of
+             pattern in current buffer
 In helm mode, we define the following to bindings:
   - =<TAB>= :: helm-execute-persistent-action, will usually show the
                current match content or if in something like =M-x= the
@@ -400,7 +400,9 @@ We use the [[http://company-mode.github.io/][company-mode]] completion framework
   - Activate completion with [[https://github.com/nsf/gocode/tree/master/emacs-company][company-go]]
     #+BEGIN_SRC emacs-lisp
       (use-package company-go
-        :after company
+        :after company go-mode
+        :bind (:map go-mode-map
+               ("<tab>" . company-complete))
         :config
         (setq company-idle-delay .1
               company-echo-delay 0)

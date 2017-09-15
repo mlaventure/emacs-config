@@ -93,7 +93,7 @@ clutter my modeline with them. [[https://github.com/myrjola/diminish.el][Diminis
 
     (global-hl-line-mode t)
   #+END_SRC
-- Show current column number
+- Show current column number in the mode line
   #+BEGIN_SRC emacs-lisp
     (column-number-mode t)
   #+END_SRC
@@ -103,7 +103,11 @@ clutter my modeline with them. [[https://github.com/myrjola/diminish.el][Diminis
   #+BEGIN_SRC emacs-lisp
     (use-package all-the-icons
       :config
+      (unless (file-exists-p "~/.local/share/fonts/all-the-icons.ttf")
+        (all-the-icons-install-fonts t))
       (setq neo-theme (if (display-graphic-p) 'icons 'arrow)))
+
+
   #+END_SRC
 ** Navigation
 - Activate Camel Case navigation
@@ -184,7 +188,7 @@ clutter my modeline with them. [[https://github.com/myrjola/diminish.el][Diminis
       (global-highlight-thing-mode))
   #+END_SRC
 ** Prettier mode-line
-We use spaceline with the cyan [[https://github.com/kuanyui/moe-theme.el][moe-theme]] for our mode-line.
+We use [[https://github.com/TheBB/spaceline][spaceline]] & [[https://github.com/domtronn/spaceline-all-the-icons.el][spaceline-all-the-icons]] with the cyan [[https://github.com/kuanyui/moe-theme.el][moe-theme]] for our mode-line.
 #+BEGIN_SRC emacs-lisp
   (use-package spaceline-config
     :ensure spaceline
@@ -194,6 +198,15 @@ We use spaceline with the cyan [[https://github.com/kuanyui/moe-theme.el][moe-th
     (powerline-moe-theme)
     (moe-theme-set-color 'cyan)
     (spaceline-emacs-theme))
+
+  (use-package spaceline-all-the-icons
+    :after spaceline
+    :config
+    (setq spaceline-all-the-icons-eyebrowse-display-name  nil
+          spaceline-all-the-icons-hide-long-buffer-path   t
+          spaceline-all-the-icons-separator-type          (quote wave))
+    (spaceline-toggle-all-the-icons-projectile-off)
+    (spaceline-all-the-icons-theme))
 #+END_SRC
 ** Mode-line customization
 - Better unique filename. We want to see =file|file= and =file|titi=

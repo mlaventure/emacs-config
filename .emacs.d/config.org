@@ -348,6 +348,14 @@ a whole window for itself.
     (setq helm-autoresize-max-height 70
           helm-autoresize-min-height 30
           helm-split-window-in-side-p t)
+    (setq helm-M-x-fuzzy-match t
+          helm-mini t
+          helm-apropos-fuzzy-match t)
+    (use-package helm-fuzzier
+      :config
+      (use-package helm-flx
+        :config (helm-flx-mode +1))
+      (helm-fuzzier-mode +1))
     (helm-autoresize-mode t))
 #+END_SRC
 * Flyspell

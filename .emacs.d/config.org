@@ -185,6 +185,20 @@ clutter my modeline with them. [[https://github.com/myrjola/diminish.el][Diminis
       (setq highlight-thing-exclude-thing-under-point t)
       (global-highlight-thing-mode))
   #+END_SRC
+** Mode-line customization
+- Better unique filename. We want to see =file|file= and =file|titi=
+  when opening =/toto/file= and =/titi/file= instead of =file<x>=.
+  #+BEGIN_SRC emacs-lisp
+    (use-package uniquify
+      :ensure nil ;; this is a builtin package
+      :config
+      (setq uniquify-buffer-name-style 'post-forward))
+  #+END_SRC
+- Show how much battery we have left
+#+BEGIN_SRC emacs-lisp
+  (use-package fancy-battery
+    :demand t)
+#+END_SRC
 ** Prettier mode-line
 We use [[https://github.com/TheBB/spaceline][spaceline]] & [[https://github.com/domtronn/spaceline-all-the-icons.el][spaceline-all-the-icons]] with the cyan [[https://github.com/kuanyui/moe-theme.el][moe-theme]] for our mode-line.
 #+BEGIN_SRC emacs-lisp
@@ -206,15 +220,6 @@ We use [[https://github.com/TheBB/spaceline][spaceline]] & [[https://github.com/
     (spaceline-toggle-all-the-icons-projectile-off)
     (spaceline-all-the-icons-theme))
 #+END_SRC
-** Mode-line customization
-- Better unique filename. We want to see =file|file= and =file|titi=
-  when opening =/toto/file= and =/titi/file= instead of =file<x>=.
-  #+BEGIN_SRC emacs-lisp
-    (use-package uniquify
-      :ensure nil ;; this is a builtin package
-      :config
-      (setq uniquify-buffer-name-style 'post-forward))
-  #+END_SRC
 ** Highlight or Fix some common mistakes
 - Trailing whitespaces
   #+BEGIN_SRC emacs-lisp

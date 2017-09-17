@@ -412,7 +412,8 @@ We use the [[http://company-mode.github.io/][company-mode]] completion framework
         (add-hook 'go-mode-hook       'flyspell-prog-mode)
         (add-hook 'go-mode-hook       (lambda ()
                                         (highlight-thing-mode 0)
-                                        (linum-mode 1))))
+                                        (linum-mode 1)
+                                        (git-gutter:linum-setup))))
     #+END_SRC
   - Install [[https://github.com/syohex/emacs-go-eldoc][go-eldoc]] to see variable, return value and function
     argument in the echo area. It depends on [[github.com/nsf/gocode][gocode]].

@@ -106,8 +106,6 @@ clutter my modeline with them. [[https://github.com/myrjola/diminish.el][Diminis
       (unless (file-exists-p "~/.local/share/fonts/all-the-icons.ttf")
         (all-the-icons-install-fonts t))
       (setq neo-theme (if (display-graphic-p) 'icons 'arrow)))
-
-
   #+END_SRC
 ** Navigation
 - Activate Camel Case navigation
@@ -495,25 +493,29 @@ directly from emacs though.
   (use-package dockerfile-mode)
 #+END_SRC
 * Misc
-When backward deleting don't push the word in the kill-ring
-#+BEGIN_SRC emacs-lisp
-  (defun mlaventure/delete-word (arg)
-    "Delete characters forward until encountering the end of a word.
-  With argument, do this that many times.
-  This command does not push text to `kill-ring'."
-    (interactive "p")
-    (delete-region
-     (point)
-     (progn
-       (forward-word arg)
-       (point))))
+- When backward deleting don't push the word in the kill-ring
+  #+BEGIN_SRC emacs-lisp
+    (defun mlaventure/delete-word (arg)
+      "Delete characters forward until encountering the end of a word.
+    With argument, do this that many times.
+    This command does not push text to `kill-ring'."
+      (interactive "p")
+      (delete-region
+       (point)
+       (progn
+         (forward-word arg)
+         (point))))
 
-  (defun mlaventure/backward-delete-word (arg)
-    "Delete characters backward until encountering the beginning of a word.
-  With argument, do this that many times.
-  This command does not push text to `kill-ring'."
-    (interactive "p")
-    (mlaventure/delete-word (- arg)))
+    (defun mlaventure/backward-delete-word (arg)
+      "Delete characters backward until encountering the beginning of a word.
+    With argument, do this that many times.
+    This command does not push text to `kill-ring'."
+      (interactive "p")
+      (mlaventure/delete-word (- arg)))
 
-  (global-set-key (kbd "<M-backspace>") 'mlaventure/backward-delete-word)
-#+END_SRC
+    (global-set-key (kbd "<M-backspace>") 'mlaventure/backward-delete-word)
+  #+END_SRC
+- Default to 4 spaces per tabs
+  #+BEGIN_SRC emacs-lisp
+    (setq tab-width 4)
+  #+END_SRC

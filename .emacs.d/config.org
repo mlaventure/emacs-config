@@ -537,5 +537,5 @@ directly from emacs though.
   #+END_SRC
 - Default to 4 spaces per tabs
   #+BEGIN_SRC emacs-lisp
-    (setq tab-width 4)
+    (setq-default tab-width 4)
   #+END_SRC

@@ -98,6 +98,11 @@ clutter my modeline with them. [[https://github.com/myrjola/diminish.el][Diminis
   #+BEGIN_SRC emacs-lisp
     (column-number-mode t)
   #+END_SRC
+- Enable visual-line mode so long lines are readable without the need
+  for horizontal scrolling.
+  #+BEGIN_SRC emacs-lisp
+    (setq-default global-visual-line-mode t)
+  #+END_SRC
 - Use icons from [[https://github.com/domtronn/all-the-icons.el][all-the-icons]], who doesn't like icons?
   TODO: need to figure out how to automatically install the icons via
   ~all-the-icons-install-fonts~ on first start

@@ -429,7 +429,7 @@ We use the [[http://company-mode.github.io/][company-mode]] completion framework
       (use-package company-go
         :after company go-mode
         :bind (:map go-mode-map
-               ("<tab>" . company-complete))
+               ("<backtab>" . company-complete))
         :config
         (setq company-idle-delay .1
               company-echo-delay 0)

@@ -44,7 +44,8 @@ able to be installed and loaded
   packages if they're not present.
   #+BEGIN_SRC emacs-lisp
     (activate-package 'use-package)
-    (setq use-package-always-ensure t)
+    (setq use-package-always-ensure t
+          use-package-verbose t)
   #+END_SRC
 - Use auto-compile to always get up-to-date compiled packages
   #+BEGIN_SRC emacs-lisp

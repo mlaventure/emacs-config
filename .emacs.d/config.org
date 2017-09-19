@@ -387,10 +387,12 @@ Let's have some warning when we type things wrong ate
 We want to check for linter errors as we go (see [[https://github.com/flycheck/flycheck][here]] for
 documentation)
 #+BEGIN_SRC emacs-lisp
-  (use-package flycheck
-    :ensure t
-    :diminish flycheck-mode
-    :init (global-flycheck-mode))
+    (use-package flycheck
+      :ensure t
+      :diminish flycheck-mode
+      :init (global-flycheck-mode)
+      :config
+      (setq flycheck-check-syntax-automatically '(save mode-enabled)))
 #+END_SRC
 * Company
 We use the [[http://company-mode.github.io/][company-mode]] completion framework

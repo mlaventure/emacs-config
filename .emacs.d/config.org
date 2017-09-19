@@ -514,6 +514,11 @@ directly from emacs though.
 #+BEGIN_SRC emacs-lisp
   (use-package dockerfile-mode)
 #+END_SRC
+* TOML
+Let's get some color in those toml file
+#+BEGIN_SRC emacs-lisp
+  (use-package toml-mode)
+#+END_SRC
 * Misc
 - When backward deleting don't push the word in the kill-ring
   #+BEGIN_SRC emacs-lisp

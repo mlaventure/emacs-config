@@ -392,7 +392,7 @@ documentation)
       :diminish flycheck-mode
       :init (global-flycheck-mode)
       :config
-      (setq flycheck-check-syntax-automatically '(save mode-enabled)))
+      (setq flycheck-check-syntax-automatically '(save)))
 #+END_SRC
 * Company
 We use the [[http://company-mode.github.io/][company-mode]] completion framework

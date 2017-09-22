@@ -113,6 +113,14 @@ clutter my modeline with them. [[https://github.com/myrjola/diminish.el][Diminis
         (all-the-icons-install-fonts t))
       (setq neo-theme (if (display-graphic-p) 'icons 'arrow)))
   #+END_SRC
+- Use [[https://github.com/purcell/default-text-scale][default-text-scale]] to update all the frame front at a time. It's bound
+  to ~C-M-=~ and ~C-M--~ by default.
+  #+BEGIN_SRC emacs-lisp
+    (use-package default-text-scale
+      :demand t
+      :config
+      (default-text-scale-mode))
+  #+END_SRC
 ** Navigation
 - Activate Camel Case navigation
   #+BEGIN_SRC emacs-lisp

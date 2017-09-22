@@ -284,7 +284,7 @@ We use [[https://github.com/TheBB/spaceline][spaceline]] & [[https://github.com/
                            :underline nil
                            :slant normal
                            :weight normal
-                           :height 70
+                           :height 100
                            :width normal
                            :foundry "unknown"
                            :family "DejaVu Sans Mono"))))

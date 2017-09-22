@@ -581,4 +581,10 @@ Let's get some color in those markdown file
   #+BEGIN_SRC emacs-lisp
     (setq-default fill-column 78)
   #+END_SRC
-
+* Emacs server
+Always have an emacs server running
+#+BEGIN_SRC emacs-lisp
+  (require 'server)
+  (unless (server-running-p)
+    (server-start))
+#+END_SRC

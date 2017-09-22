@@ -121,6 +121,10 @@ clutter my modeline with them. [[https://github.com/myrjola/diminish.el][Diminis
       :config
       (default-text-scale-mode))
   #+END_SRC
+- Don't show the startup screen
+  #+BEGIN_SRC emacs-lisp
+    (setq inhibit-startup-screen t)
+  #+END_SRC
 ** Navigation
 - Activate Camel Case navigation
   #+BEGIN_SRC emacs-lisp

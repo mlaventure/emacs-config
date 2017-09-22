@@ -387,12 +387,12 @@ Let's have some warning when we type things wrong ate
 We want to check for linter errors as we go (see [[https://github.com/flycheck/flycheck][here]] for
 documentation)
 #+BEGIN_SRC emacs-lisp
-    (use-package flycheck
-      :ensure t
-      :diminish flycheck-mode
-      :init (global-flycheck-mode)
-      :config
-      (setq flycheck-check-syntax-automatically '(save)))
+  (use-package flycheck
+    :ensure t
+    :diminish flycheck-mode
+    :init (global-flycheck-mode)
+    :config
+    (setq flycheck-check-syntax-automatically '(save)))
 #+END_SRC
 * Company
 We use the [[http://company-mode.github.io/][company-mode]] completion framework
@@ -475,6 +475,10 @@ We use the [[http://company-mode.github.io/][company-mode]] completion framework
                ("C-c d e" . godoctor-extract)
                ("C-c d t" . godoctor-toggle)
                ("C-c d g" . godoctor-godoc)))
+    #+END_SRC
+  - [[https://github.com/grafov/go-playground][go-playground]] gives us a conenient quick to use local playground
+    #+BEGIN_SRC emacs-lisp
+      (use-package go-playground)
     #+END_SRC
 * Direnv
 I make use of several different gopath, this makes use of the [[https://direnv.net/][direnv]]

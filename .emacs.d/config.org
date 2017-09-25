@@ -376,7 +376,9 @@ a whole window for itself.
           helm-apropos-fuzzy-match t)
     (use-package helm-fuzzier
       :config
+      (use-package flx)
       (use-package helm-flx
+        :after flx
         :config (helm-flx-mode +1))
       (helm-fuzzier-mode +1))
     (helm-autoresize-mode t))

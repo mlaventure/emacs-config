@@ -590,3 +590,17 @@ Always have an emacs server running
   (unless (server-running-p)
     (server-start))
 #+END_SRC
+* Projectile
+Let's try and us [[http://batsov.com/projectile/][Projectile]] to handle our projects
+#+BEGIN_SRC emacs-lisp
+  (use-package projectile
+    :after helm
+    :config
+    (use-package helm-projectile
+      :demand t)
+    (setq projectile-completion-system 'helm
+          projectile-indexing-method      'alien
+          projectile-enable-caching       nil)
+    (projectile-global-mode)
+    (helm-projectile-on))
+#+END_SRC

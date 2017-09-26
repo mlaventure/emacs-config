@@ -541,7 +541,10 @@ directly from emacs though.
 * TOML
 Let's get some color in those toml file
 #+BEGIN_SRC emacs-lisp
-  (use-package toml-mode)
+  (use-package toml-mode
+    :config
+    ;; \\ indicates end of string i.e. a simpe '\'
+    (add-to-list 'auto-mode-alist '("MAINTAINERS\\'" . toml-mode)))
 #+END_SRC
 * Protobuf
 Let's get some color in those protobuf file

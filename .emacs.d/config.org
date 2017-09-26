@@ -234,8 +234,9 @@ We use [[https://github.com/TheBB/spaceline][spaceline]] & [[https://github.com/
     :config
     (setq spaceline-all-the-icons-eyebrowse-display-name  nil
           spaceline-all-the-icons-hide-long-buffer-path   t
-          spaceline-all-the-icons-separator-type          (quote wave))
-    (spaceline-toggle-all-the-icons-projectile-off)
+          spaceline-all-the-icons-separator-type          'arrow)
+    (spaceline-all-the-icons--setup-neotree)
+    (spaceline-toggle-all-the-icons-projectile-on)
     (spaceline-all-the-icons-theme))
 #+END_SRC
 ** Highlight or Fix some common mistakes
@@ -294,6 +295,11 @@ We use [[https://github.com/TheBB/spaceline][spaceline]] & [[https://github.com/
                            :family "DejaVu Sans Mono"))))
    '(hl-line ((t (:background "steel blue"))))
    '(idle-highlight ((t (:inherit region :background "tomato")))))
+
+  ;; (add-to-list 'custom-theme-load-path (expand-file-name "~/.emacs.d/themes/"))
+  ;; (use-package nord-theme)
+  ;; (use-package badger-theme)
+  ;; (load-theme 'icy-hex-gui t)
 #+END_SRC
 * Encoding System
 UTF-8 for all the things!

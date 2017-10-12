@@ -380,6 +380,8 @@ a whole window for itself.
     (setq helm-M-x-fuzzy-match t
           helm-mini t
           helm-apropos-fuzzy-match t)
+    (setq helm-source-names-using-follow '("Occur")
+          helm-follow-mode-persistent t)
     (use-package helm-fuzzier
       :config
       (use-package flx)

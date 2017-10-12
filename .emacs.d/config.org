@@ -615,3 +615,12 @@ Let's try and us [[http://batsov.com/projectile/][Projectile]] to handle our pro
     (projectile-global-mode)
     (helm-projectile-on))
 #+END_SRC
+* Large File
+When opening large file, switch to [[https://github.com/m00natic/vlfi][VLF]] mode to avoid emacs killing the cpu
+(it'll take more memory instead)
+#+BEGIN_SRC emacs-lisp
+  (use-package vlf
+    :ensure t
+    :config
+    (require 'vlf-setup))
+#+END_SRC

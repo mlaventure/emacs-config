@@ -590,9 +590,10 @@ Let's get some color in those markdown file
 
     (global-set-key (kbd "<M-backspace>") 'mlaventure/backward-delete-word)
   #+END_SRC
-- Default to 4 spaces per tabs
+- Default to indenting with spaces and 4 spaces per tab
   #+BEGIN_SRC emacs-lisp
-    (setq-default tab-width 4)
+    (setq-default indent-tabs-mode nil
+                  tab-width 4)
   #+END_SRC
 - Set fill-column to 78, the default (70) is too aggressive.
   #+BEGIN_SRC emacs-lisp

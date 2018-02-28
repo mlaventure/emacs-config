@@ -533,12 +533,10 @@ It always go back to C eventually ;-)
     :ensure nil
     :config
     (semantic-mode 1)
+    (global-semantic-stickyfunc-mode 1)
     (use-package ede
-      :commands global-ede-mode)
-    (add-hook 'c-mode-hook (lambda ()
-                             (global-ede-mode)
-                             (semantic-idle-scheduler-mode 1)
-                             (semantic-stickyfunc-mode 1))))
+      :config
+      (global-ede-mode)))
 #+END_SRC
 * DockerFile
 Just want them to be colorized, [[https://github.com/spotify/dockerfile-mode/blob/master/dockerfile-mode.el][dockerfile-mode]] also allows to build

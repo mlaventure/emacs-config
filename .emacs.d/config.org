@@ -603,6 +603,10 @@ Let's get some color in those markdown file
   #+BEGIN_SRC emacs-lisp
     (setq auto-window-vscroll nil)
   #+END_SRC
+- Delete trailing whitespace on save
+  #+BEGIN_SRC emacs-lisp
+    (add-hook 'before-save-hook 'delete-trailing-whitespace)
+  #+END_SRC
 * Emacs server
 Always have an emacs server running
 #+BEGIN_SRC emacs-lisp

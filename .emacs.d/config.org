@@ -514,14 +514,17 @@ tool to automatically update the environment of the current buffer
     (direnv-mode))
 #+END_SRC
 * Git
-- Let's use [[https://github.com/syohex/emacs-git-gutter][git-gutter]] to keep track of changes in our buffer
+- Let's use [[https://github.com/syohex/emacs-git-gutter-fringe][git-gutter-fringe]] to keep track of changes in our buffer
   #+BEGIN_SRC emacs-lisp
-    (use-package git-gutter
-      :diminish git-gutter-mode
-      :config
-      (custom-set-variables
-       '(git-gutter:update-interval 2)))
-    (global-git-gutter-mode t)
+    (if (display-graphic-p)
+        (use-package git-gutter-fringe
+          :diminish git-gutter-mode
+          :init
+          (global-git-gutter-mode t)
+          :config
+          (setq git-gutter-fr:side 'right-fringe)
+          (custom-set-variables
+           '(git-gutter:update-interval 2))))
   #+END_SRC
 * C
 It always go back to C eventually ;-)

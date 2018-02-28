@@ -399,9 +399,9 @@ a whole window for itself.
     (helm-autoresize-mode t))
 #+END_SRC
 * Flyspell
-Let's have some warning when we type things wrong ate
+Let's have some warning when we type things wrong
 #+BEGIN_SRC emacs-lisp
-  (use-package flyspell-mode
+  (use-package flyspell
     :diminish flyspell-mode
     :ensure nil
     :config
@@ -446,11 +446,7 @@ We use the [[http://company-mode.github.io/][company-mode]] completion framework
         (setq gofmt-command "goimports")
         (add-hook 'before-save-hook   'gofmt-before-save)
         (add-hook 'go-mode-hook       'column-enforce-mode)
-        (add-hook 'go-mode-hook       'flyspell-prog-mode)
-        (add-hook 'go-mode-hook       (lambda ()
-                                        (highlight-thing-mode 0)
-                                        (linum-mode 1)
-                                        (git-gutter:linum-setup))))
+        (add-hook 'go-mode-hook       'flyspell-prog-mode))
     #+END_SRC
   - Install [[https://github.com/syohex/emacs-go-eldoc][go-eldoc]] to see variable, return value and function
     argument in the echo area. It depends on [[github.com/nsf/gocode][gocode]].

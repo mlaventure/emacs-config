@@ -57,7 +57,7 @@ able to be installed and loaded
                  (setq auto-compile-display-buffer nil)
                  (setq auto-compile-mode-line-counter t)
                  (auto-compile-on-load-mode))
-                 
+
   #+END_SRC
 * UI
 This is setting up the UI as a like it, simple and clean. I also put
@@ -296,7 +296,7 @@ We use [[https://github.com/TheBB/spaceline][spaceline]] & [[https://github.com/
                            :underline nil
                            :slant normal
                            :weight normal
-                           :height 100
+                           :height 90
                            :width normal
                            :foundry "unknown"
                            :family "DejaVu Sans Mono"))))
@@ -385,6 +385,7 @@ a whole window for itself.
           helm-autoresize-min-height 30
           helm-split-window-in-side-p t)
     (setq helm-M-x-fuzzy-match t
+          helm-ff-fuzzy-matching t
           helm-mini t
           helm-apropos-fuzzy-match t)
     (setq helm-source-names-using-follow '("Occur")
@@ -427,6 +428,7 @@ documentation)
 We use the [[http://company-mode.github.io/][company-mode]] completion framework
 #+BEGIN_SRC emacs-lisp
   (use-package company
+    :ensure t
     :diminish company-mode)
 #+END_SRC
 * Golang
@@ -446,7 +448,10 @@ We use the [[http://company-mode.github.io/][company-mode]] completion framework
         (setq gofmt-command "goimports")
         (add-hook 'before-save-hook   'gofmt-before-save)
         (add-hook 'go-mode-hook       'column-enforce-mode)
-        (add-hook 'go-mode-hook       'flyspell-prog-mode))
+        (add-hook 'go-mode-hook       'flyspell-prog-mode)
+        (add-hook 'go-mode-hook (lambda ()
+                                  (set (make-local-variable 'company-backends) '(company-go))
+                                  (company-mode))))
     #+END_SRC
   - Install [[https://github.com/syohex/emacs-go-eldoc][go-eldoc]] to see variable, return value and function
     argument in the echo area. It depends on [[github.com/nsf/gocode][gocode]].
@@ -461,14 +466,13 @@ We use the [[http://company-mode.github.io/][company-mode]] completion framework
     #+BEGIN_SRC emacs-lisp
       (use-package company-go
         :after company go-mode
+        :ensure t
         :bind (:map go-mode-map
                ("<backtab>" . company-complete))
         :config
         (setq company-idle-delay .1
+              company-tooltip-align-annotations t
               company-echo-delay 0)
-        (add-hook 'go-mode-hook (lambda ()
-                                  (set (make-local-variable 'company-backends) '(company-go))
-                                  (company-mode)))
         (custom-set-faces
          `(company-scrollbar-bg       ((t (:background "lightgray"))))
          `(company-scrollbar-fg       ((t (:background "darkgrey"))))

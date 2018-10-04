@@ -208,7 +208,8 @@ clutter my modeline with them. [[https://github.com/myrjola/diminish.el][Diminis
       :demand t
       :config
       (setq highlight-thing-exclude-thing-under-point t)
-      (global-highlight-thing-mode))
+      (add-hook 'c-mode-hook    'highlight-thing-mode)
+      (add-hook 'sh-mode-hook   'highlight-thing-mode))
   #+END_SRC
 ** Mode-line customization
 - Better unique filename. We want to see =file|file= and =file|titi=
@@ -449,6 +450,7 @@ We use the [[http://company-mode.github.io/][company-mode]] completion framework
         (add-hook 'before-save-hook   'gofmt-before-save)
         (add-hook 'go-mode-hook       'column-enforce-mode)
         (add-hook 'go-mode-hook       'flyspell-prog-mode)
+        (add-hook 'go-mode-hook       'highlight-thing-mode)
         (add-hook 'go-mode-hook (lambda ()
                                   (set (make-local-variable 'company-backends) '(company-go))
                                   (company-mode))))

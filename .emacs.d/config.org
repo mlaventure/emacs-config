@@ -447,11 +447,11 @@ We use the [[http://company-mode.github.io/][company-mode]] completion framework
                     ("M-."            . godef-jump))
         :config
         (setq gofmt-command "goimports")
-        (add-hook 'before-save-hook   'gofmt-before-save)
         (add-hook 'go-mode-hook       'column-enforce-mode)
         (add-hook 'go-mode-hook       'flyspell-prog-mode)
         (add-hook 'go-mode-hook       'highlight-thing-mode)
         (add-hook 'go-mode-hook (lambda ()
+                                  (add-hook 'before-save-hook 'gofmt-before-save nil 'local)
                                   (set (make-local-variable 'company-backends) '(company-go))
                                   (company-mode))))
     #+END_SRC
@@ -507,12 +507,12 @@ We use the [[http://company-mode.github.io/][company-mode]] completion framework
                ("C-c d t" . godoctor-toggle)
                ("C-c d g" . godoctor-godoc)))
     #+END_SRC
-  - [[https://github.com/grafov/go-playground][go-playground]] gives us a conenient quick to use local playground
+  - [[https://github.com/grafov/go-playground][go-playground]] gives us a convenient quick way to use local playground
     #+BEGIN_SRC emacs-lisp
       (use-package go-playground)
     #+END_SRC
 * Direnv
-I make use of several different gopath, this makes use of the [[https://direnv.net/][direnv]]
+I make use of several different GOPATH, this makes use of the [[https://direnv.net/][direnv]]
 tool to automatically update the environment of the current buffer
 #+BEGIN_SRC emacs-lisp
   (use-package direnv

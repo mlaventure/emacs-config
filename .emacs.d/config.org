@@ -599,6 +599,7 @@ Let's get some color in those markdown file
 - Default to indenting with spaces and 4 spaces per tab
   #+BEGIN_SRC emacs-lisp
     (setq-default indent-tabs-mode nil
+                  c-basic-offset 4
                   tab-width 4)
   #+END_SRC
 - Set fill-column to 78, the default (70) is too aggressive.

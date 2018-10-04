@@ -622,17 +622,22 @@ Always have an emacs server running
     (server-start))
 #+END_SRC
 * Projectile
-Let's try and us [[http://batsov.com/projectile/][Projectile]] to handle our projects
+Let's try and us [[http://batsov.com/projectile/][Projectile]] to handle our projects. We enable project caching
+by default. [C-c p i] will invalidate it.
 #+BEGIN_SRC emacs-lisp
   (use-package projectile
     :after helm
     :config
     (use-package helm-projectile
       :demand t)
-    (setq projectile-completion-system 'helm
+    (setq projectile-completion-system    'helm
           projectile-indexing-method      'alien
+          projectile-enable-caching       t
           projectile-enable-caching       nil)
-    (projectile-global-mode)
+    (setq projectile-globally-ignored-directories
+          (append '("vendor" "*os/output")  projectile-globally-ignored-directories))
+    (projectile-mode)
+    (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
     (helm-projectile-on))
 #+END_SRC
 * Large File

@@ -639,8 +639,7 @@ by default. [C-c p i] will invalidate it.
       :demand t)
     (setq projectile-completion-system    'helm
           projectile-indexing-method      'alien
-          projectile-enable-caching       t
-          projectile-enable-caching       nil)
+          projectile-enable-caching       t)
     (setq projectile-globally-ignored-directories
           (append '("vendor" "*os/output")  projectile-globally-ignored-directories))
     (projectile-mode)

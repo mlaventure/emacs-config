@@ -309,6 +309,13 @@ We use [[https://github.com/TheBB/spaceline][spaceline]] & [[https://github.com/
   ;; (use-package badger-theme)
   ;; (load-theme 'icy-hex-gui t)
 #+END_SRC
+** Transparency
+#+BEGIN_SRC emacs-lisp
+  ;;(set-frame-parameter (selected-frame) 'alpha '(<active> . <inactive>))
+  ;;(set-frame-parameter (selected-frame) 'alpha <both>)
+  (set-frame-parameter (selected-frame) 'alpha 85)
+  (add-to-list 'default-frame-alist '(alpha . 85))
+#+END_SRC
 * Encoding System
 UTF-8 for all the things!
 #+BEGIN_SRC emacs-lisp

@@ -462,7 +462,10 @@ We use the [[http://company-mode.github.io/][company-mode]] completion framework
         :config
         (setq gofmt-command "goimports")
         (add-hook 'go-mode-hook       'column-enforce-mode)
-        (add-hook 'go-mode-hook       'flyspell-prog-mode)
+        (add-hook 'go-mode-hook       (lambda()
+                                        (add-to-list 'flycheck-disabled-checkers 'go-megacheck)
+                                        (setq flycheck-gometalinter-disable-linters '("megacheck"))
+                                        (flyspell-prog-mode)))
         (add-hook 'go-mode-hook       'highlight-thing-mode)
         (add-hook 'go-mode-hook (lambda ()
                                   (add-hook 'before-save-hook 'gofmt-before-save nil 'local)

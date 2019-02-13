@@ -528,6 +528,28 @@ We use the [[http://company-mode.github.io/][company-mode]] completion framework
     #+BEGIN_SRC emacs-lisp
       (use-package go-playground)
     #+END_SRC
+* Rust
+Our Rust env. It depends on the following binaries:
+  - rust toolchain (https://www.rust-lang.org/tools/install)
+  - racer (https://github.com/racer-rust/emacs-racer#installation)
+  - rustlib sources (`rustup component add rust-src)
+#+BEGIN_SRC emacs-lisp
+  (use-package rust-mode
+    :config
+    (setq rust-format-on-save t)
+    (add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-mode)))
+  (use-package flycheck-rust
+    :after flycheck
+    :config
+    (add-hook 'flycheck-mode-hook #'flycheck-rust-setup))
+  (use-package racer
+    :config
+    (add-hook 'rust-mode-hook #'racer-mode)
+    (add-hook 'racer-mode-hook #'eldoc-mode)
+    (add-hook 'racer-mode-hook #'company-mode)
+    (define-key rust-mode-map (kbd "TAB") #'company-indent-or-complete-common)
+    (setq company-tooltip-align-annotations t))
+#+END_SRC
 * Direnv
 I make use of several different GOPATH, this makes use of the [[https://direnv.net/][direnv]]
 tool to automatically update the environment of the current buffer

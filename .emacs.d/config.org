@@ -127,12 +127,15 @@ clutter my modeline with them. [[https://github.com/myrjola/diminish.el][Diminis
   #+BEGIN_SRC emacs-lisp
     (setq inhibit-startup-screen t)
   #+END_SRC
-- Always show line numbers
+- Always show line numbers (use the newer display-line-numbers-mode if
+  available)
   #+BEGIN_SRC emacs-lisp
-    (use-package nlinum
-      :ensure t
-      :init
-      (global-nlinum-mode t))
+    (if (version<= "26.0.50" emacs-version)
+        (global-display-line-numbers-mode t)
+      (use-package nlinum
+        :ensure t
+        :init
+        (global-nlinum-mode t)))
   #+END_SRC
 ** Navigation
 - Activate Camel Case navigation

@@ -475,6 +475,12 @@ We use the [[http://company-mode.github.io/][company-mode]] completion framework
                                   (set (make-local-variable 'company-backends) '(company-go))
                                   (company-mode))))
     #+END_SRC
+  - Use [[https://github.com/golangci/golangci-lint][golangci-lint]] with flycheck
+    #+BEGIN_SRC emacs-lisp
+      (use-package flycheck-golangci-lint
+        :ensure t
+        :hook (go-mode . flycheck-golangci-lint-setup))
+    #+END_SRC
   - Install [[https://github.com/syohex/emacs-go-eldoc][go-eldoc]] to see variable, return value and function
     argument in the echo area. It depends on [[github.com/nsf/gocode][gocode]].
     #+BEGIN_SRC emacs-lisp

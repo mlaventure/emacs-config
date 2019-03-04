@@ -544,6 +544,9 @@ Our Rust env. It depends on the following binaries:
   - rustlib sources (`rustup component add rust-src)
 #+BEGIN_SRC emacs-lisp
   (use-package rust-mode
+    :bind (:map rust-mode-map
+                ("C-c C-c"        . comment-region)
+                ("C-u C-c C-c"    . uncomment-region))
     :config
     (setq rust-format-on-save t)
     (add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-mode)))

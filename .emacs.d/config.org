@@ -214,7 +214,9 @@ clutter my modeline with them. [[https://github.com/myrjola/diminish.el][Diminis
       :config
       (setq highlight-thing-exclude-thing-under-point t)
       (add-hook 'c-mode-hook    'highlight-thing-mode)
-      (add-hook 'sh-mode-hook   'highlight-thing-mode))
+      (add-hook 'sh-mode-hook   'highlight-thing-mode)
+      (add-hook 'go-mode-hook   'highlight-thing-mode)
+      (add-hook 'python-mode-hook   'highlight-thing-mode))
   #+END_SRC
 ** Mode-line customization
 - Better unique filename. We want to see =file|file= and =file|titi=
@@ -447,7 +449,23 @@ We use the [[http://company-mode.github.io/][company-mode]] completion framework
 #+BEGIN_SRC emacs-lisp
   (use-package company
     :ensure t
-    :diminish company-mode)
+    :diminish company-mode
+    :config
+    (setq company-idle-delay .1
+          company-tooltip-align-annotations t
+          company-echo-delay 0)
+    (custom-set-faces
+     `(company-scrollbar-bg       ((t (:background "lightgray"))))
+     `(company-scrollbar-fg       ((t (:background "darkgrey"))))
+     '(company-preview            ((t (:foreground "darkgray" :underline t))))
+     '(company-preview-common     ((t (:inherit company-preview))))
+     '(company-tooltip            ((t (:background "lightgray" :foreground "black"))))
+     '(company-tooltip-selection  ((t (:background "steelblue" :foreground "white"))))
+     '(company-tooltip-common     ((((type x)) (:inherit company-tooltip :weight bold))
+                                   (t (:inherit company-tooltip))))
+     '(company-tooltip-common-selection
+       ((((type x)) (:inherit company-tooltip-selection :weight bold))
+        (t (:inherit company-tooltip-selection))))))
 #+END_SRC
 * Golang
   - Install go-mode and set it up to use =goimports= to format our
@@ -537,6 +555,58 @@ We use the [[http://company-mode.github.io/][company-mode]] completion framework
     #+BEGIN_SRC emacs-lisp
       (use-package go-playground)
     #+END_SRC
+* Python
+Use anaconda-mode for completion and stuff
+#+BEGIN_SRC emacs-lisp
+  (use-package anaconda-mode
+    :config
+    (add-hook 'python-mode-hook 'anaconda-mode)
+    (add-hook 'python-mode-hook 'anaconda-eldoc-mode))
+#+END_SRC
+Use pyenv
+#+BEGIN_SRC emacs-lisp
+  (defun projectile-pyenv-mode-set ()
+    "Set pyenv version matching project name."
+    (let ((project (projectile-project-name)))
+      (if (member project (pyenv-mode-versions))
+          (pyenv-mode-set project)
+        (pyenv-mode-unset))))
+
+  (use-package pyenv-mode
+    :after projectil
+    :config
+    (add-hook 'python-mode-hook 'pyenv-mode)
+    (add-hook 'projectile-after-switch-project-hook 'projectile-pyenv-mode-set))
+#+END_SRC
+use pipenv virtualenv
+#+BEGIN_SRC emacs-lisp
+  (use-package pipenv
+    :hook (python-mode . pipenv-mode)
+    :init
+    (setq pipenv-projectile-after-switch-function #'pipenv-projectile-after-switch-extended))
+#+END_SRC
+Use company-mode for anaconda-mode
+#+BEGIN_SRC emacs-lisp
+  (use-package company-anaconda
+    :after company
+    :ensure t
+    :bind (:map python-mode-map
+                ("C-<tab>" . company-complete))
+    :init
+    (add-to-list 'company-backends 'company-anaconda)
+    (add-hook 'python-mode-hook 'company-mode))
+#+END_SRC
+Misc
+#+BEGIN_SRC emacs-lisp
+  (use-package python-mode
+    :bind (:map python-mode-map
+                ("C-c C-c"        . comment-region)
+                ("C-u C-c C-c"    . uncomment-region)
+                ("C-<tab>" . company-complete))
+    :config
+    (add-to-list 'company-backends 'company-anaconda)
+    (add-hook 'python-mode-hook 'company-mode))
+#+END_SRC
 * Rust
 Our Rust env. It depends on the following binaries:
   - rust toolchain (https://www.rust-lang.org/tools/install)

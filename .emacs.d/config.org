@@ -653,7 +653,7 @@ tool to automatically update the environment of the current buffer
           (custom-set-variables
            '(git-gutter:update-interval 2))))
   #+END_SRC
-* C
+* C / C++
 It always go back to C eventually ;-)
 #+BEGIN_SRC emacs-lisp
   (use-package cc-mode
@@ -664,6 +664,15 @@ It always go back to C eventually ;-)
     (use-package ede
       :config
       (global-ede-mode)))
+#+END_SRC
+Set a sane default indentation scheme
+#+BEGIN_SRC emacs-lisp
+  (defun my-c-style-mode-hook ()
+    (setq c-default-style "linux"
+          c-basic-offset 4
+          tab-width 4))
+  (add-hook 'c++-mode-hook 'my-c-style-mode-hook)
+  (add-hook 'c-mode-hook 'my-c-style-mode-hook)
 #+END_SRC
 * DockerFile
 Just want them to be colorized, [[https://github.com/spotify/dockerfile-mode/blob/master/dockerfile-mode.el][dockerfile-mode]] also allows to build

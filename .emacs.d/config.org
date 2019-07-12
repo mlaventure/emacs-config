@@ -891,3 +891,10 @@ When opening large file, switch to [[https://github.com/m00natic/vlfi][VLF]] mod
     :config
     (require 'vlf-setup))
 #+END_SRC
+* BitBake
+Use at work
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'package-archives
+               '("onpa" . "https://olanilsson.bitbucket.io/packages/"))
+  (use-package bitbake-modes)
+#+END_SRC

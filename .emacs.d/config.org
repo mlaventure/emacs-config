@@ -327,9 +327,10 @@ clutter my modeline with them. [[https://github.com/myrjola/diminish.el][Diminis
       :demand t
       :config
       (setq highlight-thing-exclude-thing-under-point t)
-      (add-hook 'c-mode-hook    'highlight-thing-mode)
-      (add-hook 'sh-mode-hook   'highlight-thing-mode)
-      (add-hook 'go-mode-hook   'highlight-thing-mode)
+      (add-hook 'c-mode-hook        'highlight-thing-mode)
+      (add-hook 'c++-mode-hook      'highlight-thing-mode)
+      (add-hook 'sh-mode-hook       'highlight-thing-mode)
+      (add-hook 'go-mode-hook       'highlight-thing-mode)
       (add-hook 'python-mode-hook   'highlight-thing-mode))
   #+END_SRC
 ** Mode-line customization

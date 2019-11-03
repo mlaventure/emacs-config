@@ -702,7 +702,7 @@ Use pyenv
         (pyenv-mode-unset))))
 
   (use-package pyenv-mode
-    :after projectil
+    :after projectile
     :config
     (add-hook 'python-mode-hook 'pyenv-mode)
     (add-hook 'projectile-after-switch-project-hook 'projectile-pyenv-mode-set))

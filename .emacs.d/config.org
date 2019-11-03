@@ -268,7 +268,7 @@ clutter my modeline with them. [[https://github.com/myrjola/diminish.el][Diminis
   (https://github.com/ema2159/centaur-tabs)
   #+BEGIN_SRC emacs-lisp
     (use-package centaur-tabs
-      :after helm
+      :after helm projectile semantic
       :ensure t
       :defer t
       :config
@@ -277,6 +277,7 @@ clutter my modeline with them. [[https://github.com/myrjola/diminish.el][Diminis
       (setq centaur-tabs-set-icons t)
       (setq centaur-tabs-set-bar 'over)
       (setq centaur-tabs-set-modified-marker t)
+      (setq centaur-tabs-cycle-scope 'tabs)
       (centaur-tabs-headline-match)
       (centaur-tabs-group-by-projectile-project)
       (centaur-tabs-mode t)

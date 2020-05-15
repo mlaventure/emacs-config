@@ -320,6 +320,7 @@ clutter my modeline with them. [[https://github.com/myrjola/diminish.el][Diminis
       (progn
         (show-smartparens-global-mode t)))
     (add-hook 'prog-mode-hook 'turn-on-smartparens-mode)
+    (add-hook 'web-mode-hook 'turn-off-smartparens-mode)
   #+END_SRC
 - Highlight current word with [[https://github.com/fgeller/highlight-thing.el][highlight-thing]]
   #+BEGIN_SRC emacs-lisp
@@ -424,7 +425,7 @@ We use [[https://github.com/TheBB/spaceline][spaceline]] & [[https://github.com/
                            :underline nil
                            :slant normal
                            :weight normal
-                           :height 90
+                           :height 120
                            :width normal
                            :foundry "unknown"
                            :family "DejaVu Sans Mono"))))
@@ -790,7 +791,7 @@ It always go back to C eventually ;-)
     :ensure nil
     :config
     (semantic-mode 1)
-    ;;(global-semantic-stickyfunc-mode 1)
+    ;;(global-semantic-stickyfunc-mode -1)
     (use-package ede
       :config
       (global-ede-mode)))

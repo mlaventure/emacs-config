@@ -32,7 +32,7 @@
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
-(setq display-line-numbers-type t)
+(setq display-line-numbers-type 'relative)
 
 
 ;; Here are some additional functions/macros that could help you configure Doom:
@@ -52,8 +52,19 @@
 ;; You can also try 'gd' (or 'C-c g d') to jump to their definition and see how
 ;; they are implemented.
 
+;; default to python3
 (add-hook! python-mode
   (setq python-shell-interpreter "python3"))
 
+;; no auto format for c/c++. The codebase hasn't it applied everywhere yet.
 (setq +format-on-save-enabled-modes
       '(not emacs-lisp-mode sql-mode tex-mode latex-mode c-mode cc-mode cpp-mode c++-mode))
+
+;; make gc comment or uncomment a line
+(use-package! evil-nerd-commenter
+  :commands (evilnc-comment-or-uncomment-lines))
+
+(map! :nv "gc" #'evilnc-comment-or-uncomment-lines)
+
+;; Change the color of the 80 column marker
+(custom-set-faces! '(hl-fill-column-face :background "purple"))

@@ -19,7 +19,8 @@
 ;;
 ;; They all accept either a font-spec, font string ("Input Mono-12"), or xlfd
 ;; font string. You generally only need these two:
-(setq doom-font (font-spec :family "DejaVu Sans Mono" :size 20))
+(setq doom-font (font-spec :family "Hack Nerd Font Mono" :size 20))
+;; (setq doom-unicode-font (font-spec :family "Hack Regular Nerd Font Complete Mono" :size 20))
 
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
@@ -68,3 +69,59 @@
 
 ;; Change the color of the 80 column marker
 (custom-set-faces! '(hl-fill-column-face :background "purple"))
+
+;; recognize my go template using pongo2
+(use-package! web-mode
+  :mode "\\.cppt\\'"
+  :mode "\\.got\\'"
+  :mode "\\.ht\\'"
+  :mode "\\.pyt\\'"
+  :config
+  (add-to-list 'web-mode-engines-alist '("django" . "\\.cppt\\'"))
+  (add-to-list 'web-mode-engines-alist '("django" . "\\.got\\'"))
+  (add-to-list 'web-mode-engines-alist '("django" . "\\.ht\\'"))
+  (add-to-list 'web-mode-engines-alist '("django" . "\\.pyt\\'")))
+
+;; Set frame opacity to 90%
+(add-to-list 'default-frame-alist '(alpha . 90))
+
+;; show help faster
+(after! which-key
+  (setq which-key-idle-delay 1.0))
+
+;; use counsel-evil-marks
+(use-package! counsel
+  :init
+  (define-key!
+    [remap evil-show-marks] #'counsel-evil-marks))
+
+;; activate line on bitbake files
+;; (use-package! bitbake-modes
+;;   :hook (bitbake-mode . display-line-numbers-mode))
+
+(add-hook! bitbake-mode
+           'display-line-numbers-mode)
+
+;; 50 is too short for me, set it to 72 which is also the limit on github
+(use-package! git-commit
+  :config
+  (setq git-commit-summary-max-length 72))
+
+(defun lsp-go-install-save-hooks ()
+    (add-hook 'before-save-hook #'lsp-organize-imports t t))
+
+(use-package! go-mode
+  :defer t
+  :after lsp-mode
+  ;; :hook (go-mode . lsp-go-install-save-hooks)
+  :config
+  (setq lsp-go-use-gofumpt t))
+
+;; (add-hook! go-mode
+;;            (add-hook! 'before-save-hook #'lsp-organize-imports t t))
+
+;; (after! go-mode
+;;       (add-hook! 'before-save-hook #'lsp-organize-imports t t))
+
+  ;;     (setq lsp-go-use-gofumpt t)
+  ;;     (add-hook 'before-save-hook #'lsp-organize-imports t t)))

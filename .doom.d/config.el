@@ -110,6 +110,7 @@
 ;; (set-frame-parameter nil 'alpha-background 80)
 (add-to-list 'default-frame-alist '(alpha . '(100 . 90)))
 (add-to-list 'default-frame-alist '(alpha-background . 90))
+(doom/set-frame-opacity 95)
 
 ;; show help faster
 (after! which-key
@@ -193,3 +194,5 @@
 
 (use-package! lsp
   :after projectile)
+
+(+global-word-wrap-mode +1)

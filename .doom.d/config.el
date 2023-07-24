@@ -195,4 +195,17 @@
 (use-package! lsp
   :after projectile)
 
+(after! sh-script
+  :config
+  (set-formatter! 'shfmt
+    '("shfmt" "-ci"
+      ("-i" "%d" (unless indent-tabs-mode tab-width))
+      ("-ln" "%s" (pcase sh-shell (`bash "bash") (`mksh "mksh") (_ "posix")))))
+)
+
+(after! magit
+  :config
+  (setq  git-commit-summary-max-length 70)
+)
+
 (+global-word-wrap-mode +1)

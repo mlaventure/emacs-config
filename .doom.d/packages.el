@@ -51,3 +51,7 @@
 
 (package! bitbake-modes
   :recipe (:host bitbucket :repo "olanilsson/bitbake-modes"))
+
+(package! platformio-mode)
+
+(package! systemd)

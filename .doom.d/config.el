@@ -135,7 +135,7 @@
   (setq git-commit-summary-max-length 72))
 
 (defun lsp-go-install-save-hooks ()
-    (add-hook 'before-save-hook #'lsp-organize-imports))
+  (add-hook 'before-save-hook #'lsp-organize-imports))
 
 (use-package! go-mode
   :defer t
@@ -155,8 +155,8 @@
 ;; (after! go-mode
 ;;       (add-hook! 'before-save-hook #'lsp-organize-imports t t))
 
-  ;;     (setq lsp-go-use-gofumpt t)
-  ;;     (add-hook 'before-save-hook #'lsp-organize-imports t t)))
+;;     (setq lsp-go-use-gofumpt t)
+;;     (add-hook 'before-save-hook #'lsp-organize-imports t t)))
 
 (setq lsp-clients-clangd-args '("-j=3"
                                 "--background-index"
@@ -168,8 +168,8 @@
 
 (after! lsp-rust
   (setq lsp-rust-analyzer-display-chaining-hints t
-  lsp-rust-analyzer-display-parameter-hints t
-  lsp-rust-analyzer-server-display-inlay-hints t))
+        lsp-rust-analyzer-display-parameter-hints t
+        lsp-rust-analyzer-server-display-inlay-hints t))
 
 ;; lsp-mode uses the projectile root to determine the root of the go project.
 ;; Add "go.mod" to the list of considered file so it's found instead of the top
@@ -190,6 +190,7 @@
 (use-package! projectile
   :config
   (add-to-list 'projectile-project-root-files-top-down-recurring "go.mod")
+  (add-to-list 'projectile-project-root-files-top-down-recurring "platformio.ini")
   (setq projectile-project-root-functions '(projectile-root-local projectile-root-top-down-recurring projectile-root-top-down projectile-root-bottom-up)))
 
 (use-package! lsp
@@ -197,15 +198,37 @@
 
 (after! sh-script
   :config
-  (set-formatter! 'shfmt
-    '("shfmt" "-ci"
-      ("-i" "%d" (unless indent-tabs-mode tab-width))
-      ("-ln" "%s" (pcase sh-shell (`bash "bash") (`mksh "mksh") (_ "posix")))))
-)
+  (set-formatter!
+    'shfmt
+    '("shfmt"
+      "--case-indent"
+      (unless indent-tabs-mode
+        (list "--indent" (number-to-string tab-width)))
+      "--language-dialect" (pcase sh-shell (`bash "bash") (`mksh "mksh") (_ "posix"))))
+  )
 
 (after! magit
   :config
   (setq  git-commit-summary-max-length 70)
-)
+  )
 
 (+global-word-wrap-mode +1)
+
+;; tell impatient mode how to render markdown
+(defun markdown-html (buffer)
+  (princ (with-current-buffer buffer
+           (format "<!DOCTYPE html><html><title>Impatient Markdown</title><xmp theme=\"united\" style=\"display:none;\"> %s  </xmp><script src=\"http://ndossougbe.github.io/strapdown/dist/strapdown.js\"></script></html>" (buffer-substring-no-properties (point-min) (point-max))))
+         (current-buffer)))
+
+(persp-mode t)
+
+(after! persp-mode
+  (defun display-workspaces-in-minibuffer ()
+    (with-current-buffer " *Minibuf-0*"
+      (erase-buffer)
+      (insert (+workspace--tabline))))
+  (run-with-idle-timer 1 t #'display-workspaces-in-minibuffer)
+  (+workspace/display))
+
+;; Don’t compact font caches during GC.
+(setq inhibit-compacting-font-caches t)

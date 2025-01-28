@@ -6,8 +6,8 @@
 
 ;; Some functionality uses this to identify you, e.g. GPG configuration, email
 ;; clients, file templates and snippets. It is optional.
-(setq user-full-name "Kenfe-Mickael Laventure"
-      user-mail-address "mickael.laventure@gmail.com")
+(setq user-full-name "Kenfe-Mickaël Laventure"
+      user-mail-address "mickael@impulselabs.com")
 
 ;; Doom exposes five (optional) variables for controlling fonts in Doom:
 ;;
@@ -132,7 +132,7 @@
 ;; 50 is too short for me, set it to 72 which is also the limit on github
 (use-package! git-commit
   :config
-  (setq git-commit-summary-max-length 72))
+  (setq git-commit-summary-max-length 75))
 
 (defun lsp-go-install-save-hooks ()
   (add-hook 'before-save-hook #'lsp-organize-imports))
@@ -209,7 +209,7 @@
 
 (after! magit
   :config
-  (setq  git-commit-summary-max-length 70)
+  (setq  git-commit-summary-max-length 75)
   )
 
 (+global-word-wrap-mode +1)
@@ -232,3 +232,6 @@
 
 ;; Don’t compact font caches during GC.
 (setq inhibit-compacting-font-caches t)
+
+(setq gc-cons-threshold (* 1024 1024 1014)) ;; 100MiB
+(setq read-process-output-max (* 8 1024 1024)) ;; 3MiB

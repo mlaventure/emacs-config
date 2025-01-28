@@ -66,3 +66,5 @@
 (package! adoc-mode
   :recipe (:host github :repo "bbatsov/adoc-mode"
            :files ("adoc-mode.el")))
+
+(package! kconfig-mode)

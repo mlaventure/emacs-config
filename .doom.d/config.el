@@ -235,3 +235,52 @@
 
 (setq gc-cons-threshold (* 1024 1024 1014)) ;; 100MiB
 (setq read-process-output-max (* 8 1024 1024)) ;; 3MiB
+
+(after! ellama
+  (setopt ellama-language "English")
+  (require 'llm-ollama)
+  (setopt ellama-provider
+	  (make-llm-ollama
+	   ;; this model should be pulled to use it
+	   ;; value should be the same as you print in terminal during pull
+	   :chat-model "llama3.1"
+	   :embedding-model "nomic-embed-text"
+	   :default-chat-non-standard-params '(("num_ctx" . 1024))))
+  (setopt ellama-providers
+	  '(("zephyr" . (make-llm-ollama
+			 :chat-model "zephyr"
+			 :embedding-model "zephyr"))
+
+	    ("llama3.1" . (make-llm-ollama
+			   :chat-model "llama3.1"
+			   :embedding-model "llama3.1"))
+	    ("mixtral" . (make-llm-ollama
+			  :chat-model "mixtral"
+			  :embedding-model "mixtral"))))
+  (setopt ellama-naming-scheme 'ellama-generate-name-by-llm)
+  ;; Translation llm provider
+  (setopt ellama-translation-provider (make-llm-ollama
+				       :chat-model "mixtral"
+				       :embedding-model "nomic-embed-text"))
+  (setq llm-warn-on-nonfree nil)
+  (setq ellama-sessions-directory "~/.config/emacs/.local/cache/ellama-sessions/"
+        ellama-sessions-auto-save t))
+
+(map! :leader
+      (:prefix-map ("l" . "ellama")
+       :desc "Ask"              "a"     #'ellama-transient-ask-menu
+       :desc "Code"             "c"     #'ellama-transient-code-menu
+       :desc "Improve"          "i"     #'ellama-transient-improve-menu
+       :desc "Make"             "m"     #'ellama-transient-make-menu
+       :desc "Provider select"  "p"     #'ellama-provider-select
+       :desc "Session"          "S"     #'ellama-transient-session-menu
+       :desc "Summarize"        "s"     #'ellama-transient-summarize-menu
+       :desc "Translate"        "t"     #'ellama-transient-translate-menu
+       :desc "Context"          "x"     #'ellama-transient-context-menu
+       (:prefix-map ("T". "Text")
+        :desc "Text Complete"   "c"     #'ellama-complete
+        :desc "Text Change"     "C"     #'ellama-change)
+       (:prefix-map ("r" . "Reasoning")
+        :desc "Solve reasoning problem"         "r"     #'ellama-solve-reasoning-problem
+        :desc "Solve domain specific problem"   "d"     #'ellama-solve-domain-specific-problem)
+       ))

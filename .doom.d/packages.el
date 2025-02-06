@@ -68,3 +68,6 @@
            :files ("adoc-mode.el")))
 
 (package! kconfig-mode)
+
+(package! ellama)
+(package! llm)

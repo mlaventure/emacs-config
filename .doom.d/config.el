@@ -289,6 +289,9 @@
                                       :default-chat-non-standard-params
                                       '(("num_ctx" . 32768)))))
 
+(require 'transient)
+(require 'ellama)
+
 (map! :leader
       (:prefix-map ("l" . "ellama")
        :desc "Ask"              "a"     #'ellama-transient-ask-menu

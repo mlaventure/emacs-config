@@ -69,5 +69,16 @@
 
 (package! kconfig-mode)
 
-(package! ellama)
+;; (package! ellama)
 (package! llm)
+
+(package! protobuf-mode)
+
+(package! dbc-mode
+  :recipe (:host github :repo "alexmurray/dbc-mode"
+           :files ("dbc-mode.el")))
+
+;; (package! copilot
+;;   :recipe (:host github :repo "copilot-emacs/copilot.el" :files ("*.el")))
+
+(package! copilot-chat)
